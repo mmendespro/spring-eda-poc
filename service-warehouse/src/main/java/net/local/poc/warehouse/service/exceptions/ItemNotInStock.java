@@ -1,0 +1,7 @@
+package net.local.poc.warehouse.service.exceptions;
+
+public class ItemNotInStock extends RuntimeException {
+	public ItemNotInStock(String itemId, int available, int required) {
+		super(String.format("item with id %s is not in stock. available - %d, required - %d", itemId, available, required));
+	}
+}

@@ -1,0 +1,16 @@
+server:
+    port: ${PORT:8080}
+
+spring:
+    application:
+        name: service-notification
+    rabbitmq:
+        host: ${RABBITMQ_HOST:localhost}
+        port: 5672
+        username: guest
+        password: guest    
+
+app:
+    customer-service:
+        base-uri: ${CUSTOMER_SERVICE_URI:localhost:8085}
+        customer-uri: ${app.customer-service.base-uri}/v1/customers

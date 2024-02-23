@@ -1,0 +1,93 @@
+POST http://localhost:8085/v1/orders
+Content-Type: application/json
+
+{
+    "customerId": "1",
+    "shippingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "billingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "paymentDetails": {
+        "cardType": "Visa",
+        "nameOnCard": "Joan Merkley",
+        "cardNumber": "4038838805770816",
+        "cvv": "197",
+        "expires": "07/2023"
+    },
+    "orderItems": [
+        {"itemId": "item-1", "quantity": 1},
+        {"itemId": "item-2", "quantity": 2},
+        {"itemId": "item-3", "quantity": 3}
+    ]
+}
+
+###
+POST http://localhost:8085/v1/orders
+Content-Type: application/json
+
+{
+    "customerId": "1",
+    "shippingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "billingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "paymentDetails": {
+        "cardType": "Visa",
+        "nameOnCard": "Joan Merkley",
+        "cardNumber": "4038838805770816",
+        "cvv": "197",
+        "expires": "07/2023"
+    },
+    "orderItems": [
+        {"itemId": "item-3", "quantity": 2},
+        {"itemId": "item-4", "quantity": 1}
+    ]
+}
+
+###
+# Description: out of stock
+###
+POST http://localhost:8085/v1/orders
+Content-Type: application/json
+
+{
+    "customerId": "2",
+    "shippingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "billingAddress": {
+        "streetAddress": "Street Name",
+        "city": "Orlando",
+        "state": "Florida",
+        "zipCode": "12345"
+    },
+    "paymentDetails": {
+        "cardType": "Visa",
+        "nameOnCard": "Joan Merkley",
+        "cardNumber": "4038838805770816",
+        "cvv": "197",
+        "expires": "07/2023"
+    },
+    "orderItems": [
+        {"itemId": "item-5", "quantity": 1}
+    ]
+}

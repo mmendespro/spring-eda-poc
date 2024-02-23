@@ -1,0 +1,19 @@
+server:
+    port: ${PORT:8083}
+
+spring:
+    application:
+        name: service-payments
+    rabbitmq:
+        host: ${RABBITMQ_HOST:localhost}
+        port: 5672
+        username: guest
+        password: guest
+    data:
+        mongodb:
+            uri: mongodb://${MONGO_USER:root}:${MONGO_PASSWORD:toor}@${MONGO_HOST:localhost}:${MONGO_PORT:27017}/solutiondb?authSource=admin
+
+app:
+  catalogue-service:
+    base-uri: ${CATALOGUE_SERVICE_URI:http://localhost:8081}
+    products-uri: ${app.catalogue-service.base-uri}/v1/products

@@ -1,0 +1,158 @@
+version: "3.8"
+
+networks:
+  localnet:
+    name: localnet
+    driver: bridge
+
+services:
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: toor
+    ports:
+      - "27017:27017"
+    volumes:
+      - $PWD/vols/mongo_data:/data/db
+    networks:
+      - localnet
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: unless-stopped
+    ports:
+      - 9000:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=toor
+      - ME_CONFIG_MONGODB_URL=mongodb://root:toor@mongodb:27017/?authSource=admin
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    links:
+      - mongodb
+    networks:
+      - localnet
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+    - localnet
+
+  service-customer:
+    build:
+      context: ../service-customer
+      dockerfile: Dockerfile
+    container_name: service-customer
+    restart:  unless-stopped
+    environment:
+      - PORT=8080
+      - MONGO_HOST=mongodb
+    ports:
+      - 8080:8080
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  service-catalogue:
+    build:
+      context: ../service-catalogue
+      dockerfile: Dockerfile
+    container_name: service-catalogue
+    restart:  unless-stopped
+    environment:
+      - PORT=8081
+      - MONGO_HOST=mongodb
+    ports:
+      - 8081:8081
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  service-warehouse:
+    build:
+      context: ../service-warehouse
+      dockerfile: Dockerfile
+    container_name: service-warehouse
+    restart:  unless-stopped
+    environment:
+      - PORT=8082
+      - MONGO_HOST=mongodb
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - 8082:8082
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  service-payments:
+    build:
+      context: ../service-payments
+      dockerfile: Dockerfile
+    container_name: service-payments
+    restart:  unless-stopped
+    environment:
+      PORT: 8083
+      MONGO_HOST: mongodb
+      RABBITMQ_HOST: rabbitmq
+      CATALOGUE_SERVICE_URI: "http://service-catalogue:8081"
+    ports:
+      - 8083:8083
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - service-orders
+      - service-catalogue
+
+  service-notification:
+    build:
+      context: ../service-notification
+      dockerfile: Dockerfile
+    container_name: service-notification
+    restart:  unless-stopped
+    environment:
+      - PORT=8084
+      - RABBITMQ_HOST=rabbitmq
+      - CUSTOMER_SERVICE_URI="service-customer:8080" 
+    ports:
+      - 8084:8084
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+  service-orders:
+    build:
+      context: ../service-orders
+      dockerfile: Dockerfile
+    container_name: service-orders
+    restart:  unless-stopped
+    environment:
+      - PORT=8085
+      - MONGO_HOST=mongodb
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - 8085:8085
+    networks:
+      - localnet
+    depends_on:
+      - mongodb
+      - rabbitmq

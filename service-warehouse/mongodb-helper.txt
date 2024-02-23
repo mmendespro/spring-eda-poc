@@ -1,0 +1,47 @@
+
+mongodb://root:toor@localhost:27017/solutiondb?authSource=admin
+
+const database = 'solutiondb';
+const collection = 'stockLine';
+
+// The current database to use.
+use(database);
+
+// Create a new collection.
+db.createCollection(collection);
+
+// The prototype form to create a collection:
+db.stockLine.insertMany(
+    [
+        {
+          "_id": "item-1",
+          "amountAvailable": 10, 
+          "amountReserved": 4,
+          "_class": "net.local.poc.warehouse.service.model.StockLine"
+        },
+        {
+          "_id": "item-2",
+          "amountAvailable": 5, 
+          "amountReserved": 3,
+          "_class": "net.local.poc.warehouse.service.model.StockLine"
+        },
+        {
+          "_id": "item-3",
+          "amountAvailable": 3, 
+          "amountReserved": 5,
+          "_class": "net.local.poc.warehouse.service.model.StockLine"
+        },
+        {
+          "_id": "item-4",
+          "amountAvailable": 2, 
+          "amountReserved": 2,
+          "_class": "net.local.poc.warehouse.service.model.StockLine"
+        },
+        {
+          "_id": "item-5",
+          "amountAvailable": 0, 
+          "amountReserved": 0,
+          "_class": "net.local.poc.warehouse.service.model.StockLine"
+        }
+      ]
+)

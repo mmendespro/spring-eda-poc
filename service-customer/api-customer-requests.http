@@ -1,0 +1,22 @@
+GET http://localhost:8080/v1/customers/2
+###
+POST http://localhost:8080/v1/customers
+Content-Type: application/json
+
+{
+     "id": "1", 
+     "firstName": "Alice", 
+     "lastName": "Smith", 
+     "email": "alice.smith@gmail.com"
+}
+
+###
+POST http://localhost:8080/v1/customers
+Content-Type: application/json
+
+{
+     "id": "2", 
+     "firstName": "Jonh", 
+     "lastName": "Doe", 
+     "email": "jonh.doe@gmail.com"
+}
